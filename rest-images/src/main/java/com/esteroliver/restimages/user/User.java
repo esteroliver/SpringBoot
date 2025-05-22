@@ -16,5 +16,5 @@ class User{
     private String username;
 
     @Column(name = "profilepic_fk", unique = true)
-    private UUID profilepic;
+    private String profilepic;
 }

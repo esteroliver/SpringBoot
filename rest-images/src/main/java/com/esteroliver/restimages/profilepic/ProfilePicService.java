@@ -38,14 +38,10 @@ public class ProfilePicService {
 
         Files.copy(imageUploud.getInputStream(), filePath, StandardCopyOption.REPLACE_EXISTING);
 
-        return imageUploud.getOriginalFilename();
+        return fileName;
     }
 
-    public byte[] getProfilePic(String dir, UUID imageId) throws IOException {
-        Optional<ProfilePic> picOpt = profilePicRepository.findById(imageId);
-        ProfilePic profilePic = picOpt.get();
-        String imageName = imageId.toString() + "_" + profilePic.getFilename();
-
+    public byte[] getProfilePic(String dir, String imageName) throws IOException {
         Path imagePath = Path.of("images", dir, imageName);
 
         if (!Files.exists(imagePath)) {
