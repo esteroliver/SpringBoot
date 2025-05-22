@@ -5,6 +5,7 @@ import lombok.Data;
 
 import java.util.UUID;
 
+@Entity
 @Data
 @Table(name = "profilepics")
 public class ProfilePic {
