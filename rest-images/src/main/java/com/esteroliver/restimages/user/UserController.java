@@ -2,12 +2,12 @@ package com.esteroliver.restimages.user;
 
 import com.esteroliver.restimages.profilepic.ProfilePicService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.nio.file.Path;
-import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -19,17 +19,25 @@ public class UserController {
     ProfilePicService profilePicService;
 
     @PostMapping("/user/{username}")
-    public User createUser(@PathVariable String username, @RequestParam MultipartFile profilePicture) throws IOException {
+    public ResponseEntity<User> createUser(@PathVariable("username") String username, @RequestParam("file") MultipartFile profilePicture) throws IOException {
         User user = userService.createUser(username, profilePicture);
-        return user;
+        ResponseEntity<User> responseEntity = new ResponseEntity<>(user, HttpStatus.CREATED);
+        return responseEntity;
     }
 
     @GetMapping("/user/{username}/profilepic")
-    public byte[] getProfilePicture(@PathVariable String username) throws IOException {
+    public ResponseEntity<byte[]> getProfilePicture(@PathVariable("username") String username) throws IOException {
         Optional<User> userOpt = userService.getUser(username);
         User user = userOpt.get();
         String imageName = user.getProfilepic();
         byte[] image = profilePicService.getProfilePic(user.getUsername(), imageName);
-        return image;
+        ResponseEntity<byte[]> responseEntity = new ResponseEntity<>(image, HttpStatus.OK);
+        return responseEntity;
+    }
+
+    @GetMapping("/hello")
+    public ResponseEntity<String> hello() {
+        ResponseEntity<String> responseEntity = new ResponseEntity<>("Hello World!", HttpStatus.OK);
+        return responseEntity;
     }
 }
