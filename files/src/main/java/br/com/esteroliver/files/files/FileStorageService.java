@@ -1,7 +1,6 @@
-package br.com.esteroliver.files.services;
+package br.com.esteroliver.files.files;
 
-import br.com.esteroliver.files.configs.FileStorageConfig;
-import br.com.esteroliver.files.exceptions.FileStorageException;
+import br.com.esteroliver.files.exceptions.filesExceptions.FileStorageException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;

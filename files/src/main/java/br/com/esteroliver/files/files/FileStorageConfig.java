@@ -1,4 +1,4 @@
-package br.com.esteroliver.files.configs;
+package br.com.esteroliver.files.files;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;
