@@ -48,4 +48,8 @@ public class DoctorService {
         doctorRepository.save(doctor);
         return doctor_update;
     }
+
+    public void deleteDoctor(Long id){
+        doctorRepository.deleteById(id);
+    }
 }

@@ -32,4 +32,17 @@ public class DoctorController {
     public ResponseEntity<DoctorPutDto> update(@RequestBody @Valid DoctorPutDto update_doctor) throws Exception {
         return ResponseEntity.status(HttpStatus.OK).body(doctorService.updateDoctor(update_doctor));
     }
+
+    @DeleteMapping("/absolute-delete/{id}")
+    public ResponseEntity<String> absoluteDelete(@PathVariable Long id){
+        doctorService.deleteDoctor(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Doctor deleted.");
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id){
+        //doctorService.deleteDoctor(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Doctor deleted.");
+    }
+
 }

@@ -24,6 +24,8 @@ public class Doctor {
     @Enumerated(EnumType.STRING)
     private SpeciltyEnum especialidade;
 
+    private Boolean ativo;
+
     public Doctor(){}
 
     public Doctor(DoctorPostDto doctorPostDto) {
@@ -32,5 +34,6 @@ public class Doctor {
         this.crm = doctorPostDto.crm();
         this.especialidade = doctorPostDto.especialidade();
         this.endereco = new Address(doctorPostDto.endereco());
+        this.ativo = true;
     }
 }
