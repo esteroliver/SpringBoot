@@ -24,4 +24,13 @@ public class Doctor {
     @Enumerated(EnumType.STRING)
     private SpeciltyEnum especialidade;
 
+    public Doctor(){}
+
+    public Doctor(DoctorDto doctorDto) {
+        this.nome = doctorDto.nome();
+        this.email = doctorDto.email();
+        this.crm = doctorDto.crm();
+        this.especialidade = doctorDto.especialidade();
+        this.endereco = new Address(doctorDto.endereco());
+    }
 }

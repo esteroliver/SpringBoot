@@ -11,4 +11,14 @@ public class Address {
     private String cidade;
     private String uf;
     private String complemento;
+
+    public Address(AddressDto addressDto){
+        this.logradouro = addressDto.logradouro();
+        this.numero = addressDto.numero();
+        this.complemento = addressDto.complemento();
+        this.cep = addressDto.cep();
+        this.uf = addressDto.uf();
+        this.bairro = addressDto.bairro();
+        this.cidade = addressDto.cidade();
+    }
 }
