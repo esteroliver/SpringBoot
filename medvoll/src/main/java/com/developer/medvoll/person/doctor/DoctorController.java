@@ -26,7 +26,7 @@ public class DoctorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(doctorService.createDoctor(new_doctor_dto));
     }
 
-    @GetMapping("")
+    @GetMapping("/listar-medicos")
     public ResponseEntity<List<DoctorResponse>> getAll(){
          return ResponseEntity.status(HttpStatus.OK).body(doctorService.getAllDoctors());
     }

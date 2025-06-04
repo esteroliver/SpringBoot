@@ -12,6 +12,8 @@ public class Address {
     private String uf;
     private String complemento;
 
+    public Address(){}
+
     public Address(AddressDto addressDto){
         this.logradouro = addressDto.logradouro();
         this.numero = addressDto.numero();
