@@ -11,7 +11,7 @@ import med.voll.api.utils.address.Address;
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private long id;
+    private Long id;
 
     private String nome;
 
