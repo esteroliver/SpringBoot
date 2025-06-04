@@ -1,13 +1,13 @@
 package com.developer.medvoll.person.doctor;
 
 import jakarta.validation.Valid;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -29,5 +29,10 @@ public class DoctorController {
     @GetMapping("/listar-medicos")
     public ResponseEntity<List<DoctorResponse>> getAll(){
          return ResponseEntity.status(HttpStatus.OK).body(doctorService.getAllDoctors());
+    }
+
+    @GetMapping("")
+    public ResponseEntity<Page<DoctorResponse>> getByPage(Pageable page){
+        return ResponseEntity.status(HttpStatus.OK).body(doctorService.getDoctorsByPage(page));
     }
 }

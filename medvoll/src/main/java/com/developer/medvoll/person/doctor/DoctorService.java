@@ -1,12 +1,11 @@
 package com.developer.medvoll.person.doctor;
 
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class DoctorService {
@@ -21,5 +20,9 @@ public class DoctorService {
 
     public List<DoctorResponse> getAllDoctors(){
         return doctorRepository.findAll().stream().map(DoctorResponse::new).toList();
+    }
+
+    public Page<DoctorResponse> getDoctorsByPage(Pageable page){
+        return doctorRepository.findAll(page).map(DoctorResponse::new);
     }
 }
