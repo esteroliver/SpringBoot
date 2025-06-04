@@ -26,11 +26,11 @@ public class Doctor {
 
     public Doctor(){}
 
-    public Doctor(DoctorDto doctorDto) {
-        this.nome = doctorDto.nome();
-        this.email = doctorDto.email();
-        this.crm = doctorDto.crm();
-        this.especialidade = doctorDto.especialidade();
-        this.endereco = new Address(doctorDto.endereco());
+    public Doctor(DoctorPostDto doctorPostDto) {
+        this.nome = doctorPostDto.nome();
+        this.email = doctorPostDto.email();
+        this.crm = doctorPostDto.crm();
+        this.especialidade = doctorPostDto.especialidade();
+        this.endereco = new Address(doctorPostDto.endereco());
     }
 }
