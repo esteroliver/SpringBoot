@@ -16,10 +16,6 @@ public class DoctorController {
     @Autowired
     DoctorService doctorService;
 
-    @GetMapping("/hello")
-    public String helloWorld(){
-        return "Hello world!";
-    }
 
     @PostMapping("")
     public ResponseEntity<DoctorDto> create(@RequestBody @Valid DoctorDto new_doctor_dto){
