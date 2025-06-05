@@ -28,12 +28,17 @@ public class DoctorService {
         return new_doctor_dto;
     }
 
-    public List<DoctorResponse> getAllDoctors(){
-        return doctorRepository.findAll().stream().map(DoctorResponse::new).toList();
+
+    public Page<DoctorResponse> getAllDoctors(Pageable page){
+        return doctorRepository.findAll(page).map(DoctorResponse::new);
     }
 
-    public Page<DoctorResponse> getDoctorsByPage(Pageable page){
-        return doctorRepository.findAll(page).map(DoctorResponse::new);
+    public Page<DoctorResponse> getAllDoctorsByAtivoTrue(Pageable page){
+        return doctorRepository.findAllByAtivoTrue(page).map(DoctorResponse::new);
+    }
+
+    public Page<DoctorResponse> getAllDoctorsByAtivoFalse(Pageable page){
+        return doctorRepository.findAllByAtivoFalse(page).map(DoctorResponse::new);
     }
 
     public DoctorPutDto updateDoctor(DoctorPutDto doctor_update) throws Exception {

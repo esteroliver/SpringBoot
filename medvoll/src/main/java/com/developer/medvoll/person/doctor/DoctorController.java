@@ -23,8 +23,18 @@ public class DoctorController {
     }
 
     @GetMapping("")
-    public ResponseEntity<Page<DoctorResponse>> getByPage(Pageable page){
-        return ResponseEntity.status(HttpStatus.OK).body(doctorService.getDoctorsByPage(page));
+    public ResponseEntity<Page<DoctorResponse>> getAll(Pageable page){
+        return ResponseEntity.status(HttpStatus.OK).body(doctorService.getAllDoctors(page));
+    }
+
+    @GetMapping("/ativos")
+    public ResponseEntity<Page<DoctorResponse>> getAllAtivo(Pageable page){
+        return ResponseEntity.status(HttpStatus.OK).body(doctorService.getAllDoctorsByAtivoTrue(page));
+    }
+
+    @GetMapping("/inativos")
+    public ResponseEntity<Page<DoctorResponse>> getAllInativo(Pageable page){
+        return ResponseEntity.status(HttpStatus.OK).body(doctorService.getAllDoctorsByAtivoFalse(page));
     }
 
     @PutMapping("")
@@ -39,9 +49,9 @@ public class DoctorController {
         return ResponseEntity.status(HttpStatus.OK).body("Doctor deleted.");
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable Long id){
-        //doctorService.deleteDoctor(id);
+    @DeleteMapping("/logic-delete/{id}")
+    public ResponseEntity<String> delete(@PathVariable Long id) throws Exception{
+        doctorService.logicDeleteDoctor(id);
         return ResponseEntity.status(HttpStatus.OK).body("Doctor deleted.");
     }
 
