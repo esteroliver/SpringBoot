@@ -14,7 +14,7 @@ public class DoctorService {
     @Autowired
     DoctorRepository doctorRepository;
 
-    private Doctor getDoctorById(Long id) throws Exception{
+    private Doctor getDoctorByIdPrivate(Long id) throws Exception{
         Optional<Doctor> doctor_optional = doctorRepository.findById(id);
         if(doctor_optional.isEmpty()){
             throw new Exception("Doctor not found.");
@@ -33,6 +33,11 @@ public class DoctorService {
         return doctorRepository.findAll(page).map(DoctorResponse::new);
     }
 
+    public DoctorResponse getDoctorById(Long id) throws Exception{
+        Doctor doctor = getDoctorByIdPrivate(id);
+        return new DoctorResponse(doctor);
+    }
+
     public Page<DoctorResponse> getAllDoctorsByAtivoTrue(Pageable page){
         return doctorRepository.findAllByAtivoTrue(page).map(DoctorResponse::new);
     }
@@ -42,7 +47,7 @@ public class DoctorService {
     }
 
     public DoctorPutDto updateDoctor(DoctorPutDto doctor_update) throws Exception {
-        Doctor doctor = getDoctorById(doctor_update.id());
+        Doctor doctor = getDoctorByIdPrivate(doctor_update.id());
 
         if( !(doctor_update.nome()).equals(doctor.getNome()) ){
             doctor.setNome(doctor_update.nome());
@@ -63,7 +68,7 @@ public class DoctorService {
     }
 
     public void logicDeleteDoctor(Long id) throws Exception{
-        Doctor doctor = getDoctorById(id);
+        Doctor doctor = getDoctorByIdPrivate(id);
         doctor.setAtivo(false);
         doctorRepository.save(doctor);
     }
