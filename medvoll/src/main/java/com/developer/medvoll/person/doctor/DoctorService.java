@@ -56,4 +56,10 @@ public class DoctorService {
     public void deleteDoctor(Long id){
         doctorRepository.deleteById(id);
     }
+
+    public void logicDeleteDoctor(Long id) throws Exception{
+        Doctor doctor = getDoctorById(id);
+        doctor.setAtivo(false);
+        doctorRepository.save(doctor);
+    }
 }
