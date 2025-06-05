@@ -14,6 +14,14 @@ public class DoctorService {
     @Autowired
     DoctorRepository doctorRepository;
 
+    private Doctor getDoctorById(Long id) throws Exception{
+        Optional<Doctor> doctor_optional = doctorRepository.findById(id);
+        if(doctor_optional.isEmpty()){
+            throw new Exception("Doctor not found.");
+        }
+        return doctor_optional.get();
+    }
+
     public DoctorPostDto createDoctor(DoctorPostDto new_doctor_dto){
         Doctor new_doctor = new Doctor(new_doctor_dto);
         doctorRepository.save(new_doctor);
@@ -29,11 +37,7 @@ public class DoctorService {
     }
 
     public DoctorPutDto updateDoctor(DoctorPutDto doctor_update) throws Exception {
-        Optional<Doctor> doctor_optional = doctorRepository.findById(doctor_update.id());
-        if(doctor_optional.isEmpty()){
-            throw new Exception("Doctor not found.");
-        }
-        Doctor doctor = doctor_optional.get();
+        Doctor doctor = getDoctorById(doctor_update.id());
 
         if( !(doctor_update.nome()).equals(doctor.getNome()) ){
             doctor.setNome(doctor_update.nome());
