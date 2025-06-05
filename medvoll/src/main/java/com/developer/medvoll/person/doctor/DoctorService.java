@@ -1,6 +1,7 @@
 package com.developer.medvoll.person.doctor;
 
 import com.developer.medvoll.utils.entities.Address;
+import com.developer.medvoll.utils.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -14,10 +15,10 @@ public class DoctorService {
     @Autowired
     DoctorRepository doctorRepository;
 
-    private Doctor getDoctorByIdPrivate(Long id) throws Exception{
+    private Doctor getDoctorByIdPrivate(Long id) throws NotFoundException {
         Optional<Doctor> doctor_optional = doctorRepository.findById(id);
         if(doctor_optional.isEmpty()){
-            throw new Exception("Doctor not found.");
+            throw new NotFoundException("Doctor not found.");
         }
         return doctor_optional.get();
     }
@@ -33,7 +34,7 @@ public class DoctorService {
         return doctorRepository.findAll(page).map(DoctorResponse::new);
     }
 
-    public DoctorResponse getDoctorById(Long id) throws Exception{
+    public DoctorResponse getDoctorById(Long id) throws NotFoundException{
         Doctor doctor = getDoctorByIdPrivate(id);
         return new DoctorResponse(doctor);
     }
@@ -46,7 +47,7 @@ public class DoctorService {
         return doctorRepository.findAllByAtivoFalse(page).map(DoctorResponse::new);
     }
 
-    public DoctorPutDto updateDoctor(DoctorPutDto doctor_update) throws Exception {
+    public DoctorPutDto updateDoctor(DoctorPutDto doctor_update) throws NotFoundException {
         Doctor doctor = getDoctorByIdPrivate(doctor_update.id());
 
         if( !(doctor_update.nome()).equals(doctor.getNome()) ){
@@ -67,7 +68,7 @@ public class DoctorService {
         doctorRepository.deleteById(id);
     }
 
-    public void logicDeleteDoctor(Long id) throws Exception{
+    public void logicDeleteDoctor(Long id) throws NotFoundException{
         Doctor doctor = getDoctorByIdPrivate(id);
         doctor.setAtivo(false);
         doctorRepository.save(doctor);

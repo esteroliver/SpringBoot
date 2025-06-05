@@ -1,5 +1,6 @@
 package com.developer.medvoll.person.doctor;
 
+import com.developer.medvoll.utils.exceptions.NotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +29,7 @@ public class DoctorController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<DoctorResponse> getById(@PathVariable Long id) throws Exception{
+    public ResponseEntity<DoctorResponse> getById(@PathVariable Long id) throws NotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(doctorService.getDoctorById(id));
     }
 
@@ -44,7 +45,7 @@ public class DoctorController {
 
     @PutMapping("")
     @Transactional
-    public ResponseEntity<DoctorPutDto> update(@RequestBody @Valid DoctorPutDto update_doctor) throws Exception {
+    public ResponseEntity<DoctorPutDto> update(@RequestBody @Valid DoctorPutDto update_doctor) throws NotFoundException {
         return ResponseEntity.status(HttpStatus.OK).body(doctorService.updateDoctor(update_doctor));
     }
 
@@ -55,7 +56,7 @@ public class DoctorController {
     }
 
     @DeleteMapping("/logic-delete/{id}")
-    public ResponseEntity delete(@PathVariable Long id) throws Exception{
+    public ResponseEntity delete(@PathVariable Long id) throws NotFoundException{
         doctorService.logicDeleteDoctor(id);
         return ResponseEntity.noContent().build();
     }
