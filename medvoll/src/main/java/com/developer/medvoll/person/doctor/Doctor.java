@@ -5,8 +5,9 @@ import com.developer.medvoll.utils.enums.SpeciltyEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 
-@Entity
 @Data
+@Entity(name = "doctors")
+@Table(name = "doctors")
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

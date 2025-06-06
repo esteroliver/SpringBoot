@@ -1,6 +1,6 @@
 package com.developer.medvoll.person.doctor;
 
-import com.developer.medvoll.utils.exceptions.NotFoundException;
+import com.developer.medvoll.infra.exceptions.NotFoundException;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
