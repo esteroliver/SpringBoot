@@ -1,4 +1,4 @@
-package com.developer.medvoll.utils.exceptions;
+package com.developer.medvoll.infra.exceptions;
 
 public class NotFoundException extends RuntimeException {
 

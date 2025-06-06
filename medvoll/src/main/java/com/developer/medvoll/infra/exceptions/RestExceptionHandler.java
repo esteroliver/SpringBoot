@@ -1,4 +1,4 @@
-package com.developer.medvoll.utils.exceptions;
+package com.developer.medvoll.infra.exceptions;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
