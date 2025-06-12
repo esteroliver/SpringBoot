@@ -7,7 +7,7 @@ import lombok.Data;
 
 @Data
 @Entity(name = "doctors")
-@Table(name = "doctors")
+@Table(name = "doctors", schema = "person")
 public class Doctor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
