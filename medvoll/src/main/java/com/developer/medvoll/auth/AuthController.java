@@ -1,5 +1,8 @@
 package com.developer.medvoll.auth;
 
+import com.developer.medvoll.infra.security.TokenJwt;
+import com.developer.medvoll.infra.security.TokenService;
+import com.developer.medvoll.person.user.User;
 import com.developer.medvoll.person.user.UserDto;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,10 +22,15 @@ public class AuthController {
     @Autowired
     AuthenticationManager manager;
 
+    @Autowired
+    TokenService tokenService;
+
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid UserDto user){
-        var token = new UsernamePasswordAuthenticationToken(user.login(), user.senha());
-        manager.authenticate(token);
-        return ResponseEntity.ok().build();
+        var authToken = new UsernamePasswordAuthenticationToken(user.login(), user.senha());
+        var auth = manager.authenticate(authToken);
+        var token = tokenService.generateToken((User) auth.getPrincipal());
+        TokenJwt tokenResponse = new TokenJwt(token, user.login());
+        return ResponseEntity.ok(tokenResponse);
     }
 }
