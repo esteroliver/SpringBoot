@@ -1,0 +1,1 @@
+ALTER TABLE person.doctors ADD COLUMN cpf VARCHAR(11);

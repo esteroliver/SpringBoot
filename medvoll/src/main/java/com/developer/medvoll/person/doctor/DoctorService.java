@@ -1,5 +1,6 @@
 package com.developer.medvoll.person.doctor;
 
+import com.developer.medvoll.infra.exceptions.BadRequestException;
 import com.developer.medvoll.utils.entities.Address;
 import com.developer.medvoll.infra.exceptions.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,6 +25,8 @@ public class DoctorService {
 
     public DoctorPostDto createDoctor(DoctorPostDto new_doctor_dto){
         Doctor new_doctor = new Doctor(new_doctor_dto);
+        if(doctorRepository.findByCpf(new_doctor_dto.cpf()).isPresent() || doctorRepository.findByCrm(new_doctor_dto.crm()).isPresent())
+            throw new BadRequestException("Doctor already exists.");
         doctorRepository.save(new_doctor);
         return new_doctor_dto;
     }

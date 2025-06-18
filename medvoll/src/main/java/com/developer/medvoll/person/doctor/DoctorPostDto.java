@@ -9,6 +9,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 
 public record DoctorPostDto(@NotBlank String nome,
+                            @NotBlank String cpf,
                             @NotBlank @Email String email,
                             @NotBlank @Pattern(regexp = "\\d{4,6}") String crm,
                             @NotNull @Valid AddressDto endereco,

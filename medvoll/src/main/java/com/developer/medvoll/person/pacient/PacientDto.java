@@ -1,6 +1,6 @@
 package com.developer.medvoll.person.pacient;
 
-import com.developer.medvoll.utils.entities.Address;
+import com.developer.medvoll.utils.entities.AddressDto;
 import com.developer.medvoll.utils.enums.GenderEnum;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Email;
@@ -14,7 +14,7 @@ public record PacientDto(@NotBlank String nome,
                          @NotBlank String cpf,
                          @NotNull Date dataNascimento,
                          @NotNull GenderEnum genero,
-                         @NotNull @Valid Address endereco,
+                         @NotNull @Valid AddressDto endereco,
                          @NotBlank @Email String email,
                          List<String> cid,
                          List<String> alergia
