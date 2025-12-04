@@ -5,14 +5,15 @@ import lombok.Data;
 
 @Data
 @Entity(name = "usersapí")
-@Table(name="usersapi")
+@Table(name = "usersapi")
 public class User {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
-    private String login;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-    private String senha;
+	private String login;
+
+	private String senha;
 
 }

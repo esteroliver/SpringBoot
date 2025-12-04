@@ -9,32 +9,35 @@ import lombok.Data;
 @Entity(name = "doctors")
 @Table(name = "doctors")
 public class Doctor {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
 
-    private String nome;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-    private String email;
+	private String nome;
 
-    private String crm;
+	private String email;
 
-    @Embedded
-    private Address endereco;
+	private String crm;
 
-    @Enumerated(EnumType.STRING)
-    private SpeciltyEnum especialidade;
+	@Embedded
+	private Address endereco;
 
-    private Boolean ativo;
+	@Enumerated(EnumType.STRING)
+	private SpeciltyEnum especialidade;
 
-    public Doctor(){}
+	private Boolean ativo;
 
-    public Doctor(DoctorPostDto doctorPostDto) {
-        this.nome = doctorPostDto.nome();
-        this.email = doctorPostDto.email();
-        this.crm = doctorPostDto.crm();
-        this.especialidade = doctorPostDto.especialidade();
-        this.endereco = new Address(doctorPostDto.endereco());
-        this.ativo = true;
-    }
+	public Doctor() {
+	}
+
+	public Doctor(DoctorPostDto doctorPostDto) {
+		this.nome = doctorPostDto.nome();
+		this.email = doctorPostDto.email();
+		this.crm = doctorPostDto.crm();
+		this.especialidade = doctorPostDto.especialidade();
+		this.endereco = new Address(doctorPostDto.endereco());
+		this.ativo = true;
+	}
+
 }
