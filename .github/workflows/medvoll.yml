@@ -27,9 +27,9 @@ jobs:
           distribution: oracle
           cache: maven
       - name: Configurando settings.xml do Maven
-        uses: s4u/maven-settings-action@v4.0.0
+        uses: whelk-io/maven-settings-xml-action@v22
         with:
-          plugin-groups: '["io.spring.javaformat"]'
+          plugin_groups: '["io.spring.javaformat"]'
       - name: Instalando pacotes com Maven
         run: ./mvnw -DskipTests clean install --file pom.xml
       - name: Validar formatação Spring JavaFormat
