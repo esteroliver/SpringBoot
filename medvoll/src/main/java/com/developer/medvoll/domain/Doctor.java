@@ -1,9 +1,11 @@
-package com.developer.medvoll.person.doctor;
+package com.developer.medvoll.domain;
 
 import com.developer.medvoll.utils.entities.Address;
 import com.developer.medvoll.utils.enums.SpeciltyEnum;
 import jakarta.persistence.*;
 import lombok.Data;
+
+import com.developer.medvoll.person.doctor.DoctorPostDto;
 
 @Data
 @Entity(name = "doctors")

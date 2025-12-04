@@ -1,4 +1,4 @@
-package com.developer.medvoll.person.user;
+package com.developer.medvoll.domain;
 
 import jakarta.persistence.*;
 import lombok.Data;

@@ -30,7 +30,16 @@ jobs:
         uses: whelk-io/maven-settings-xml-action@v22
         with:
           plugin_groups: '["io.spring.javaformat"]'
+      - name: Cache local do Maven
+        uses: actions/cache@v4
+        with:
+          path: ~/.m2
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+          restore-keys: |
+            ${{ runner.os }}-maven-
       - name: Instalando pacotes com Maven
         run: ./mvnw -DskipTests clean install --file pom.xml
       - name: Validar formatação Spring JavaFormat
         run: ./mvnw spring-javaformat:validate
+      - name: Gerar diagrama de classes com PlantUML
+        run: ./mvnw generate-test-sources
