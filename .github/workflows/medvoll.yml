@@ -3,12 +3,8 @@ name: Medvoll - CI
 on:
   push:
     branches: "*"
-    paths:
-      - 'medvoll/**'
   pull_request:
     branches: "*"
-    paths:
-      - 'medvoll/**'
 
 jobs:
   java-build:
@@ -31,3 +27,5 @@ jobs:
           cache: maven
       - name: Build com Maven
         run: ./mvnw -DskipTests clean install --file pom.xml
+      - name: Validar formatação com maven
+        run: ./mvnw sudo mvn spring-javaformat:validate
