@@ -89,7 +89,6 @@
 
     <build>
         <plugins>
-
             <!-- PlantUML -->
             <plugin>
                 <artifactId>plantuml-generator-maven-plugin</artifactId>
