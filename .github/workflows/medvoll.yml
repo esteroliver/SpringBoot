@@ -3,8 +3,12 @@ name: Medvoll - CI
 on:
   push:
     branches: "*"
+    paths:
+      - 'medvoll/**'  
   pull_request:
     branches: "*"
+    paths:
+      - 'medvoll/**'  
     
 jobs:
   java-build:
