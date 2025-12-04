@@ -33,4 +33,4 @@ jobs:
       - name: Instalando pacotes com Maven
         run: ./mvnw -DskipTests clean install --file pom.xml
       - name: Validar formatação Spring JavaFormat
-        run: ./mvnw sudo mvn spring-javaformat:validate
+        run: ./mvnw spring-javaformat:validate
