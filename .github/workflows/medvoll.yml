@@ -1,12 +1,17 @@
----
 name: Medvoll - CI
+
 on:
   push:
     branches: "*"
+    paths:
+      - 'medvoll/**'
   pull_request:
     branches: "*"
+    paths:
+      - 'medvoll/**'
+
 jobs:
-  build:
+  java-build:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -16,21 +21,13 @@ jobs:
       matrix:
         java-versions:
           - 25
-  steps:
-    - name: Checkout
-      uses: actions/checkout@v6
-    - name: Setando a versão do Java 25
-      uses: actions/setup-java@v5
-      with:
-        java-version: 25
-        distribution: openjdk
-        cache: maven
-    - name: Cache das dependências Maven
-      uses: actions/cache@v3
-      with:
-        path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('medvoll/pom.xml') }}
-        restore-keys: |
-          ${{ runner.os }}-maven-
-    - name: Build com Maven
-      run: ./mvnw -DskipTests clean install --file medvoll/pom.xml
+
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-java@v5
+        with:
+          java-version: 25
+          distribution: oracle
+          cache: maven
+      - name: Build com Maven
+        run: ./mvnw -DskipTests clean install --file pom.xml
