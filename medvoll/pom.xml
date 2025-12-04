@@ -89,6 +89,7 @@
 
     <build>
         <plugins>
+
             <!-- PlantUML -->
             <plugin>
                 <artifactId>plantuml-generator-maven-plugin</artifactId>
@@ -145,6 +146,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <!-- Spring JavaFormat -->
             <plugin>
                 <groupId>io.spring.javaformat</groupId>
@@ -160,6 +162,7 @@
                     </execution>
                 </executions>
             </plugin>
+            
             <!-- Lombok -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
