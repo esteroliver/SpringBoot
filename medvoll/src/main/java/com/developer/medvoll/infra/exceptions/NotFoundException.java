@@ -6,6 +6,9 @@ public class NotFoundException extends RuntimeException {
 		super("Entity not found.");
 	}
 
+
+
+
 	public NotFoundException(String message) {
 		super(message);
 	}
