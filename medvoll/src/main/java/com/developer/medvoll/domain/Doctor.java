@@ -5,7 +5,7 @@ import com.developer.medvoll.utils.enums.SpeciltyEnum;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import com.developer.medvoll.person.doctos.DoctorPostDto;
+import com.developer.medvoll.person.doctor.DoctorPostDto;
 
 @Data
 @Entity(name = "doctors")
