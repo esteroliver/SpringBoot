@@ -1,4 +1,4 @@
-package com.developer.medvoll.person.doctor;
+package com.developer.medvoll.domain;
 
 import com.developer.medvoll.utils.entities.Address;
 import com.developer.medvoll.utils.enums.SpeciltyEnum;

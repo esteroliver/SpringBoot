@@ -89,6 +89,63 @@
 
     <build>
         <plugins>
+            <!-- PlantUML -->
+            <plugin>
+                <artifactId>plantuml-generator-maven-plugin</artifactId>
+                <groupId>de.elnarion.maven</groupId>
+                <version>${plantuml-generator-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-simple-diagram</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <outputFilename>domain-classes-diagram.puml</outputFilename>
+                            <scanPackages>
+                                <scanPackage>
+                                    com.developer.medvoll.person
+                                </scanPackage>
+                            </scanPackages>
+                            <hideFields>false</hideFields>
+                            <hideMethods>true</hideMethods>
+                            <blacklistRegexp>.*Builder.*</blacklistRegexp>
+                            <fieldBlacklistRegexp>^\$?\$?_hibernate_.*</fieldBlacklistRegexp>
+                            <methodBlacklistRegexp>^\$?\$?_hibernate_.*</methodBlacklistRegexp>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <plugin>
+                <groupId>com.github.davidmoten</groupId>
+                <artifactId>plantuml-maven-plugin</artifactId>
+                <version>${plantuml-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>generate-diagrams</id>
+                        <goals>
+                            <goal>generate</goal>
+                        </goals>
+                        <phase>generate-test-sources</phase>
+                        <configuration>
+                            <sources>
+                                <directory>target/generated-docs</directory>
+                                <includes>
+                                    <include>**/*.puml</include>
+                                </includes>
+                            </sources>
+                            <outputDirectory>${project.build.directory}/generated-diagrams</outputDirectory>
+                            <formats>
+                                <format>png</format>
+                            </formats>
+                            <verbose>true</verbose>
+                            <preserveDirectoryStructure>false</preserveDirectoryStructure>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- Spring JavaFormat -->
             <plugin>
                 <groupId>io.spring.javaformat</groupId>
                 <artifactId>spring-javaformat-maven-plugin</artifactId>
@@ -103,6 +160,7 @@
                     </execution>
                 </executions>
             </plugin>
+            <!-- Lombok -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
