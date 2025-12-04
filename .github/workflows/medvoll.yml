@@ -3,13 +3,9 @@ name: Medvoll - CI
 on:
   push:
     branches: "*"
-    paths:
-      - 'medvoll/**'  
   pull_request:
     branches: "*"
-    paths:
-      - 'medvoll/**'  
-    
+
 jobs:
   java-build:
     runs-on: ubuntu-latest
@@ -21,7 +17,7 @@ jobs:
       matrix:
         java-versions:
           - 25
-          
+
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-java@v5
@@ -31,3 +27,5 @@ jobs:
           cache: maven
       - name: Build com Maven
         run: ./mvnw -DskipTests clean install --file pom.xml
+      - name: Validar formatação com maven
+        run: ./mvnw sudo mvn spring-javaformat:validate
