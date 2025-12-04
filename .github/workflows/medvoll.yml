@@ -16,11 +16,9 @@ jobs:
       matrix:
         java-versions:
           - 25
-  steps:
-    - name: Checkout
-      uses: actions/checkout@v6
-    - name: Setando a versão do Java 25
-      uses: actions/setup-java@v5
+    steps:
+    - uses: actions/checkout@v5
+    - uses: actions/setup-java@v5
       with:
         java-version: 25
         distribution: openjdk
