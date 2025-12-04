@@ -94,7 +94,7 @@
             <plugin>
                 <artifactId>plantuml-generator-maven-plugin</artifactId>
                 <groupId>de.elnarion.maven</groupId>
-                <version>${plantuml-generator-maven-plugin.version}</version>
+                <version>3.0.1</version>
                 <executions>
                     <execution>
                         <id>generate-simple-diagram</id>
@@ -121,7 +121,7 @@
             <plugin>
                 <groupId>com.github.davidmoten</groupId>
                 <artifactId>plantuml-maven-plugin</artifactId>
-                <version>${plantuml-maven-plugin.version}</version>
+                <version>0.2.14</version>
                 <executions>
                     <execution>
                         <id>generate-diagrams</id>
@@ -162,7 +162,7 @@
                     </execution>
                 </executions>
             </plugin>
-            
+
             <!-- Lombok -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
