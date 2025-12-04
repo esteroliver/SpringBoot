@@ -30,4 +30,4 @@ jobs:
           distribution: oracle
           cache: maven
       - name: Build com Maven
-        run: ./mvnw -DskipTests clean install --file medvoll/pom.xml
+        run: ./mvnw -DskipTests clean install --file pom.xml
