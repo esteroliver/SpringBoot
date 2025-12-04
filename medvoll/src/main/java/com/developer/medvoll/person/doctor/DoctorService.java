@@ -9,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.Optional;
 
+import com.developer.medvoll.domain.Doctor;
+
 @Service
 public class DoctorService {
 
