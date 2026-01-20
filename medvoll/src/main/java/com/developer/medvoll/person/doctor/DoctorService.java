@@ -51,7 +51,7 @@ public class DoctorService {
 	public DoctorPutDto updateDoctor(DoctorPutDto doctor_update) throws NotFoundException {
 		Doctor doctor = getDoctorByIdPrivate(doctor_update.id());
 
-		if (!doctor_update.nome()).equals(doctor.getNome()) {
+		if (!doctor_update.nome().equals(doctor.getNome())) {
 			doctor.setNome(doctor_update.nome());
 		}
 
