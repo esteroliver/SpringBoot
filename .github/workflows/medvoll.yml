@@ -43,3 +43,13 @@ jobs:
         run: ./mvnw spring-javaformat:validate
       - name: Gerar diagrama de classes com PlantUML
         run: ./mvnw generate-test-sources
+      - name: PMD
+        run: ./mvnw -B -Ppmd validate
+      - name: Uploud dos arquivos PMD
+        uses: actions/upload-artifact@v4.5.0
+        with:
+          name: pmd
+          path: |
+            target/pmd.xml
+            target/pmd
+            target/reports

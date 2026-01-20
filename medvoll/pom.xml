@@ -28,6 +28,8 @@
     </scm>
     <properties>
         <java.version>25</java.version>
+        <maven-pmd-plugin.version>3.26.0</maven-pmd-plugin.version>
+        <pmd.ruleset>src/checkconfig/pmd/pmd-ruleset.xml</pmd.ruleset>
     </properties>
     <dependencies>
         <dependency>
@@ -117,6 +119,7 @@
                     </execution>
                 </executions>
             </plugin>
+
             <plugin>
                 <groupId>com.github.davidmoten</groupId>
                 <artifactId>plantuml-maven-plugin</artifactId>
@@ -189,5 +192,50 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <!-- PMD Plugin -->
+        <profile>
+            <id>pmd</id>
+            <build>
+                <pluginManagement>
+                    <plugins>
+                        <plugin>
+                            <groupId>org.apache.maven.plugins</groupId>
+                            <artifactId>maven-pmd-plugin</artifactId>
+                            <version>${maven-pmd-plugin.version}</version>
+                            <configuration>
+                                <targetJdk>${java.source}</targetJdk>
+                                <includeTests>true</includeTests>
+                                <rulesets>
+                                    <ruleset>${pmd.ruleset}</ruleset>
+                                </rulesets>
+                                <analysisCache>true</analysisCache>
+                                <linkXRef>false</linkXRef>
+                                <skip>false</skip>
+                                <printFailingErrors>true</printFailingErrors>
+                                <verbose>true</verbose>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+                </pluginManagement>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-pmd-plugin</artifactId>
+                        <executions>
+                            <execution>
+                                <id>pmd-check</id>
+                                <phase>validate</phase>
+                                <goals>
+                                    <goal>check</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 
 </project>
