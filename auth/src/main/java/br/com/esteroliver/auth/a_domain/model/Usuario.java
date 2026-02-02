@@ -1,5 +1,6 @@
-package br.com.esteroliver.auth.model;
+package br.com.esteroliver.auth.a_domain.model;
 
+import br.com.esteroliver.auth.a_domain.enums.Papel;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -14,4 +15,7 @@ public class Usuario{
     private String email;
 
     private String nome;
+
+    @Enumerated(EnumType.STRING)
+    private Papel papel;
 }
