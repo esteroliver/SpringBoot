@@ -16,6 +16,8 @@ public class Usuario{
 
     private String nome;
 
+    private String senha;
+
     @Enumerated(EnumType.STRING)
     private Papel papel;
 }
