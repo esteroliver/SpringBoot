@@ -1,9 +1,10 @@
 package br.com.esteroliver.files;
 
-import br.com.esteroliver.files.files.FileStorageConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
+
+import br.com.esteroliver.files.config.FileStorageConfig;
 
 @SpringBootApplication
 @EnableConfigurationProperties({

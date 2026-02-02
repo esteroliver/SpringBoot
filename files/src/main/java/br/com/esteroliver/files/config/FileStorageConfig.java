@@ -1,10 +1,13 @@
-package br.com.esteroliver.files.files;
+package br.com.esteroliver.files.config;
 
-import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
 import org.springframework.boot.context.properties.ConfigurationProperties;
 
-@Data
+@Getter
+@Setter
 @ConfigurationProperties(prefix = "file")
 public class FileStorageConfig {
-    private String uploudDirectory;
+    private String uploudDir;
 }

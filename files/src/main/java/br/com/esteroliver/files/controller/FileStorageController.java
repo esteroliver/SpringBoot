@@ -1,7 +1,9 @@
-package br.com.esteroliver.files.files;
+package br.com.esteroliver.files.controller;
 
-import br.com.esteroliver.files.exceptions.filesExceptions.FileStorageException;
+import br.com.esteroliver.files.exception.FileStorageException;
 import br.com.esteroliver.files.responses.UploudFileResponse;
+import br.com.esteroliver.files.service.FileStorageService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,9 +22,11 @@ public class FileStorageController {
     private FileStorageService fileStorageService;
 
     @PostMapping("/uploud")
-    public ResponseEntity<UploudFileResponse> uploudFile(@RequestParam("file")MultipartFile file) throws FileStorageException {
+    public ResponseEntity<UploudFileResponse> uploudFile(@RequestParam("file") MultipartFile file) throws FileStorageException {
         String filename = fileStorageService.storeFile(file);
-        String downloaduri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/api/files/").path(filename).toUriString();
+        String downloaduri = ServletUriComponentsBuilder.fromCurrentContextPath().path("/arquivos").path(filename).toUriString();
+
+        System.out.println(downloaduri);
 
         UploudFileResponse uploudResponse = new UploudFileResponse();
         uploudResponse.setFileName(filename);

@@ -1,6 +1,8 @@
-package br.com.esteroliver.files.files;
+package br.com.esteroliver.files.service;
 
-import br.com.esteroliver.files.exceptions.filesExceptions.FileStorageException;
+import br.com.esteroliver.files.config.FileStorageConfig;
+import br.com.esteroliver.files.exception.FileStorageException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -18,7 +20,7 @@ public class FileStorageService{
     @Autowired
     public FileStorageService(FileStorageConfig fileStorageConfig) throws FileStorageException {
 
-        this.fileStorageLocation = Paths.get(fileStorageConfig.getUploudDirectory())
+        this.fileStorageLocation = Paths.get(fileStorageConfig.getUploudDir())
                 .toAbsolutePath()
                 .normalize();
 

@@ -1,4 +1,4 @@
-package br.com.esteroliver.files.exceptions.filesExceptions;
+package br.com.esteroliver.files.exception;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ResponseStatus;
