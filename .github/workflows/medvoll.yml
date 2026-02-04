@@ -46,7 +46,7 @@ jobs:
       - name: Uploud do diagrama UML
         uses: actions/upload-artifact@v4.5.0
         with:
-          name: pmd
+          name: uml
           path: target/generated-diagrams/domain-classes-diagram.png
       - name: PMD
         run: ./mvnw -B -Ppmd validate
