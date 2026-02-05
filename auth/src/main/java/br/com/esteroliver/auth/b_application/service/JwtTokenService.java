@@ -15,7 +15,7 @@ import com.auth0.jwt.exceptions.JWTCreationException;
 
 @Service
 public class JwtTokenService {
-    private static final String SECRET_KEY = "";
+    private static final String SECRET_KEY = "3c86d3471ee61f25fa3e20ca1acadeff";
     private static final String ISSUER = "esteroliver";
 
     public String gerarToken(UserDetailsImpl userDetails){
