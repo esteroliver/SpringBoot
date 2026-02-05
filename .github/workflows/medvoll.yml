@@ -41,8 +41,15 @@ jobs:
         run: ./mvnw -DskipTests clean install --file pom.xml
       - name: Validar formatação Spring JavaFormat
         run: ./mvnw spring-javaformat:validate
+      - name: Instalar Graphviz (necessário para PlantUML)
+        run: sudo apt-get update && sudo apt-get install -y graphviz
       - name: Gerar diagrama de classes com PlantUML
         run: ./mvnw generate-test-sources
+      - name: Uploud do diagrama UML
+        uses: actions/upload-artifact@v4.5.0
+        with:
+          name: uml
+          path: medvoll/target/generated-diagrams/domain-classes-diagram.png
       - name: PMD
         run: ./mvnw -B -Ppmd validate
       - name: Uploud dos arquivos PMD
@@ -50,6 +57,6 @@ jobs:
         with:
           name: pmd
           path: |
-            target/pmd.xml
-            target/pmd
-            target/reports
+            medvoll/target/pmd.xml
+            medvoll/target/pmd
+            medvoll/target/reports
