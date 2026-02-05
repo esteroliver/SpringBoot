@@ -7,7 +7,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 @EnableWebSecurity
 public class SecurityConfiguration {
     
-    public static final String[] ENDPOINTS_WITH_AUTH_NOT_REQUIRED = {
+    public static final String[] ENDPOINTS_PUBLICOS = {
         "/usuario/login",
         "/usuario/registro"
     };
