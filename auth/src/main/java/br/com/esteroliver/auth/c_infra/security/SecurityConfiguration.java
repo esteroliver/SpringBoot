@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 public class SecurityConfiguration {
     
     public static final String[] ENDPOINTS_PUBLICOS = {
-        "/usuario/login",
+        "/auth/login",
         "/usuario/registro"
     };
     
