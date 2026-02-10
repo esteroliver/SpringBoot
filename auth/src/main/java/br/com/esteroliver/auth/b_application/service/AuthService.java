@@ -27,7 +27,7 @@ public class AuthService {
     @Autowired
     JwtTokenService jwtTokenService;
 
-    private TokenResponseDTO autenticar(LoginDTO dto){
+    public TokenResponseDTO autenticar(LoginDTO dto){
 
         UsernamePasswordAuthenticationToken usernamePasswordAuthToken = new UsernamePasswordAuthenticationToken(
             dto.email(), dto.senha()
