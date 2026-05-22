@@ -1,3 +1,32 @@
+server:
+  port: 8081
+
 spring:
   application:
     name: auth-keycloak
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/db_auth_keycloak
+    username: postgres
+    password: postgres
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: none
+
+  flyway:
+    user: postgres
+    password: postgres
+    url: jdbc:postgresql://localhost:5432/db_auth_keycloak
+    schemas: public
+    baseline-on-migrate: true
+
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8080/realms/auth-keycloak-app}
+
+cors:
+  allowed-origins: ${ALLOWED_CORS_ORIGINS:*}
