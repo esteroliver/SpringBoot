@@ -1,28 +1,18 @@
 package br.com.esteroliver.auth.b_application.dto;
 
 import br.com.esteroliver.auth.a_domain.enums.Papel;
-import br.com.esteroliver.auth.a_domain.model.Usuario;
+import br.com.esteroliver.auth.c_infra.security.UserDetailsImpl;
 
 public record TokenResponseDTO(
-
-    Long id,
-
-    String email,
-
-    String nome,
-
-    Papel papel,
-
-    String token
-    
+        String email,
+        Papel papel,
+        String token
 ) {
-    public static TokenResponseDTO tokenResponse(String token, Usuario usuario){
+    public static TokenResponseDTO tokenResponse(String token, UserDetailsImpl usuario){
 
         return new TokenResponseDTO(
-                    usuario.getId(), 
-                    usuario.getEmail(), 
-                    usuario.getNome(), 
-                    usuario.getPapel(), 
+                    usuario.getUsername(),
+                    usuario.getUsuario().getPapel(),
                     token
                 );
                 

@@ -7,16 +7,12 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 
 import br.com.esteroliver.auth.c_infra.security.UserDetailsImpl;
-import br.com.esteroliver.auth.a_domain.repository.UsuarioRepository;
 import br.com.esteroliver.auth.b_application.dto.LoginDTO;
 import br.com.esteroliver.auth.b_application.dto.TokenResponseDTO;
 import br.com.esteroliver.auth.c_infra.security.JwtTokenService;
 
 @Service
 public class AuthService {
-
-    @Autowired
-    UsuarioRepository usuarioRepository;
 
     @Autowired
     AuthenticationManager authenticationManager;
@@ -37,7 +33,7 @@ public class AuthService {
 
         return TokenResponseDTO.tokenResponse(
             jwtTokenService.gerarToken(userDetails), 
-            userDetails.getUsuario()
+            userDetails
         );
     }
     

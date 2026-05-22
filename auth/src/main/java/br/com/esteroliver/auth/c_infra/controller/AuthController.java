@@ -21,9 +21,14 @@ public class AuthController {
     AuthService authService;
 
     @PostMapping("/login")
-    public ResponseEntity<TokenResponseDTO> autenticarUsuario(@RequestBody LoginDTO dto) {
-        TokenResponseDTO token = authService.autenticar(dto);
-        return new ResponseEntity<>(token, HttpStatus.OK);
+    public ResponseEntity<Object> autenticarUsuario(@RequestBody LoginDTO dto) {
+        try {
+            TokenResponseDTO token = authService.autenticar(dto);
+            return new ResponseEntity<>(token, HttpStatus.OK);
+        }
+        catch (Exception ex){
+            return new ResponseEntity<>("Erro ao autenticar: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
     
 }

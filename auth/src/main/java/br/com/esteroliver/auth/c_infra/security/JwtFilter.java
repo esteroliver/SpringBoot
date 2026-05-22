@@ -45,9 +45,6 @@ public class JwtFilter extends OncePerRequestFilter {
 
                 SecurityContextHolder.getContext().setAuthentication(authentication);
             }
-            else{
-                throw new RuntimeException("O token está ausente.");
-            }
         }
 
         filterChain.doFilter(request, response);

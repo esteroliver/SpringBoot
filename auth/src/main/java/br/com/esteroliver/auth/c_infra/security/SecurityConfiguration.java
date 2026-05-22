@@ -26,12 +26,12 @@ public class SecurityConfiguration {
     JwtFilter jwtFilter;
     
     public static final String[] ENDPOINTS_PUBLICOS = {
-        "auth/login",
-        "usuarios/criar"
+        "/auth/login",
+        "/usuarios/criar"
     };
 
     public static final String[] ENDPOINTS_PARA_AUNTETICADOS = {
-            "teste/autenticacao"
+            "/usuarios/teste"
     };
 
     @Bean
@@ -56,7 +56,7 @@ public class SecurityConfiguration {
                     (auth) -> auth
                         .requestMatchers(ENDPOINTS_PUBLICOS).permitAll()
                         .requestMatchers(ENDPOINTS_PARA_AUNTETICADOS).authenticated()
-                        .anyRequest().denyAll()
+                        .anyRequest().permitAll()
                 )
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
