@@ -10,7 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
-import br.com.esteroliver.auth.a_domain.model.UserDetailsImpl;
 import br.com.esteroliver.auth.a_domain.model.Usuario;
 import br.com.esteroliver.auth.a_domain.repository.UsuarioRepository;
 import jakarta.servlet.FilterChain;
@@ -32,7 +31,7 @@ public class JwtFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         
         // Configuração para endpoints privados
-        if(checarSeEndpointEstaPrivado(request)){
+        if(endpointPrivado(request)){
             String token = recuperarToken(request);
             if(token != null){
                 String subject = jwtTokenService.verificarToken(token);
@@ -54,10 +53,9 @@ public class JwtFilter extends OncePerRequestFilter {
         filterChain.doFilter(request, response);
     }
 
-    private boolean checarSeEndpointEstaPrivado(HttpServletRequest request){
+    private boolean endpointPrivado(HttpServletRequest request){
         String requestUri = request.getRequestURI();
-        return !Arrays.asList(SecurityConfiguration.ENDPOINTS_PUBLICOS)
-                    .contains(requestUri);
+        return Arrays.stream(SecurityConfiguration.ENDPOINTS_PUBLICOS).noneMatch(requestUri::contains);
     }
     
     private String recuperarToken(HttpServletRequest request){

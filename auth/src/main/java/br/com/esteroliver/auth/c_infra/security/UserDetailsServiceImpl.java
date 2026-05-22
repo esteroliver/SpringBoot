@@ -1,6 +1,5 @@
-package br.com.esteroliver.auth.b_application.service;
+package br.com.esteroliver.auth.c_infra.security;
 
-import br.com.esteroliver.auth.a_domain.model.UserDetailsImpl;
 import br.com.esteroliver.auth.a_domain.model.Usuario;
 import br.com.esteroliver.auth.a_domain.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;

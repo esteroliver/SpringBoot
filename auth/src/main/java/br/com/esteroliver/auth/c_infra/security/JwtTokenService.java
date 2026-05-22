@@ -1,7 +1,5 @@
 package br.com.esteroliver.auth.c_infra.security;
 
-import br.com.esteroliver.auth.a_domain.model.UserDetailsImpl;
-
 import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
