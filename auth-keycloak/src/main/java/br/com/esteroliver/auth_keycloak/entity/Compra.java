@@ -7,15 +7,15 @@ import java.util.UUID;
 
 @Data
 @Entity
-@Table(name = "cliente", schema = "loja")
-public class Cliente {
+@Table(name = "compra", schema = "loja")
+public class Compra {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID id;
 
-    private String nome;
+    private String itens;
 
-    private String telefone;
-
-    private String email;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "id_cliente", nullable = false)
+    private Cliente cliente;
 }
