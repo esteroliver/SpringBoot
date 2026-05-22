@@ -3,15 +3,32 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:24.0.1
     command: start-dev
+    container_name: keycloak-app
     environment:
       KEYCLOAK_ADMIN: admin
       KEYCLOAK_ADMIN_PASSWORD: admin
     ports:
       - "8080:8080"
-  backend:
+  api:
     build:
       context: .
       dockerfile: Dockerfile
-    image: auth-keycloak-app
+    container_name: auth-keycloak-spring
+    restart: unless-stopped
     ports:
       - "8081:8081"
+    depends_on:
+      - keycloak
+      - db
+    environment:
+      KEYCLOAK_ISSUER_URI: http://localhost:8080/realms/auth-keycloak-app
+      ALLOWED_CORS_ORIGINS: *
+  db:
+    image: postgres:16-alpine
+    container_name: db-auth-keycloak
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
