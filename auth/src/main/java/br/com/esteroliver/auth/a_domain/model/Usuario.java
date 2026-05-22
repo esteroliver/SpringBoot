@@ -27,4 +27,8 @@ public class Usuario{
         nome = dto.nome();
         papel = dto.papel();
     }
+
+    public Usuario() {
+
+    }
 }
