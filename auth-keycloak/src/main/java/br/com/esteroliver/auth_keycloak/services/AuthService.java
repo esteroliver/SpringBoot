@@ -1,0 +1,58 @@
+package br.com.esteroliver.auth_keycloak.services;
+
+import br.com.esteroliver.auth_keycloak.dto.LoginRequestDTO;
+import br.com.esteroliver.auth_keycloak.dto.LoginResponseDTO;
+import br.com.esteroliver.auth_keycloak.dto.UsuarioRequestDTO;
+import br.com.esteroliver.auth_keycloak.dto.UsuarioResponseDTO;
+import br.com.esteroliver.auth_keycloak.entity.Usuario;
+import br.com.esteroliver.auth_keycloak.entity.enums.Papel;
+import br.com.esteroliver.auth_keycloak.repository.UsuarioRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class AuthService {
+
+    public final KeycloakAdminService keycloakAdminService;
+    public final UsuarioRepository usuarioRepository;
+
+    public UsuarioResponseDTO cadastrarUsuarioCliente(UsuarioRequestDTO request){
+        if(usuarioRepository.findByEmail(request.email()).isPresent()){
+            throw new RuntimeException("Email já cadastrado.");
+        }
+
+        String keycloakId;
+
+        try{
+            keycloakId = keycloakAdminService.criarUsuario(request);
+        }
+        catch (Exception exc){
+            throw new RuntimeException("Erro ao criar usuário no Keycloak: " + exc.getMessage());
+        }
+
+        Usuario usuario = Usuario.builder()
+                .email(request.email())
+                .nome(request.nome())
+                .papel(Papel.CLIENTE)
+                .keycloakId(keycloakId)
+                .build();
+
+        return UsuarioResponseDTO.from(usuarioRepository.save(usuario));
+    }
+
+    public LoginResponseDTO login(LoginRequestDTO request){
+        var tokens = keycloakAdminService.login(request);
+
+        Usuario usuario = usuarioRepository.findByEmail(request.email())
+                .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
+
+        return new LoginResponseDTO(
+                (String) tokens.get("access_token"),
+                (String) tokens.get("refresh_token"),
+                (Number) tokens.get("expires_in"),
+                (String) tokens.get("token_type"),
+                UsuarioResponseDTO.from(usuario)
+        );
+    }
+}
