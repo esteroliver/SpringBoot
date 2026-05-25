@@ -10,7 +10,7 @@ import java.util.UUID;
 @Table(name = "compra", schema = "loja")
 public class Compra {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
     private String itens;

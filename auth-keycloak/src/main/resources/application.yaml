@@ -26,7 +26,15 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8080/realms/auth-keycloak-app}
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8080/realms/my-apps}
 
 cors:
   allowed-origins: ${ALLOWED_CORS_ORIGINS:*}
+
+keycloak:
+  base-url: http://localhost:8080
+  realm: my-apps
+  client-id: auth-keycloak
+  client-secret: ${CLIENT_SECRET}
+  admin-username: admin
+  admin-password: admin

@@ -1,4 +1,4 @@
-package br.com.esteroliver.auth_keycloak;
+package br.com.esteroliver.auth_keycloak.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
