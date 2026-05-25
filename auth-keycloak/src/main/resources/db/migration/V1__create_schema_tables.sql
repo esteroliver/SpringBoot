@@ -1,4 +1,4 @@
-CREATE SCHEMA loja;
+CREATE SCHEMA IF NOT EXISTS loja;
 
 CREATE TABLE loja.cliente(
     id UUID PRIMARY KEY,

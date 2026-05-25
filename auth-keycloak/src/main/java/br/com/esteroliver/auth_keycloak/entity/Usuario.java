@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 import java.util.UUID;
 
 @Entity
-@Table(name = "usuario", schema = "public")
+@Table(name = "usuario")
 @Data
 @Builder
 @AllArgsConstructor
