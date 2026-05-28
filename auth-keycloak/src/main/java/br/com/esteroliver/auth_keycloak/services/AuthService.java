@@ -7,15 +7,16 @@ import br.com.esteroliver.auth_keycloak.dto.UsuarioResponseDTO;
 import br.com.esteroliver.auth_keycloak.entity.Usuario;
 import br.com.esteroliver.auth_keycloak.entity.enums.Papel;
 import br.com.esteroliver.auth_keycloak.repository.UsuarioRepository;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-@RequiredArgsConstructor
 public class AuthService {
 
-    public final KeycloakAdminService keycloakAdminService;
-    public final UsuarioRepository usuarioRepository;
+    @Autowired
+    KeycloakAdminService keycloakAdminService;
+    @Autowired
+    UsuarioRepository usuarioRepository;
 
     public UsuarioResponseDTO cadastrarUsuarioCliente(UsuarioRequestDTO request){
         if(usuarioRepository.findByEmail(request.email()).isPresent()){
