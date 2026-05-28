@@ -2,6 +2,10 @@ package br.com.esteroliver.auth_keycloak.services;
 
 import br.com.esteroliver.auth_keycloak.config.KeycloakProperties;
 import br.com.esteroliver.auth_keycloak.dto.*;
+import br.com.esteroliver.auth_keycloak.exceptions.KeycloakConflictException;
+import br.com.esteroliver.auth_keycloak.exceptions.KeycloakIntegrationException;
+import br.com.esteroliver.auth_keycloak.exceptions.KeycloakUnauthorizedException;
+import org.jspecify.annotations.NonNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -57,76 +61,73 @@ public class KeycloakAdminService {
         }
         catch (HttpClientErrorException e){
             if (e.getStatusCode() == HttpStatus.CONFLICT) {
-                throw new RuntimeException("Usuario ja existe no Keycloak (409).", e);
+                throw new KeycloakConflictException("Conflito entre os dados para criação do usuário (409): " + e.getMessage());
             }
             if (e.getStatusCode() == HttpStatus.UNAUTHORIZED) {
-                throw new RuntimeException("Admin token rejeitado pelo Keycloak (401).", e);
+                throw new KeycloakUnauthorizedException("Admin token rejeitado pelo Keycloak (401): " + e.getMessage());
             }
-            throw new RuntimeException("Falha ao criar usuario no Keycloak: HTTP %s".formatted(e.getStatusCode()), e);
+            throw new KeycloakIntegrationException("Falha ao criar usuario no Keycloak (%s): %s"
+                    .formatted(e.getStatusCode(), e.getMessage())
+            );
         }
     }
 
     public KeycloakLoginResponseDTO login(LoginRequestDTO request){
-        LinkedMultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-
-        formData.add("grant_type", "password");
-        formData.add("client_id", props.getClientId());
-        formData.add("client_secret", props.getClientSecret());
-        formData.add("username", request.email());
-        formData.add("password", request.senha());
-
-        try{
-            Map tokens = restClient.post()
-                    .uri(props.getBaseUrl() + "/realms/" + props.getRealm() + "/protocol/openid-connect/token")
-                    .contentType(MediaType.APPLICATION_FORM_URLENCODED)
-                    .body(formData)
-                    .retrieve()
-                    .body(Map.class);
-
-            if(tokens == null){
-                //throw exception
-            }
-
-            return new KeycloakLoginResponseDTO(
-                    (String) tokens.get("access_token"),
-                    (String) tokens.get("refresh_token"),
-                    (Number) tokens.get("expires_in"),
-                    (String) tokens.get("token_type")
-            );
-        }
-        catch (HttpClientErrorException exc){
-            throw new BadCredentialsException("Email ou senha inválidos");
-        }
+        var tokens = loginGenerico(request);
+        return new KeycloakLoginResponseDTO(
+                (String) tokens.get("access_token"),
+                (String) tokens.get("refresh_token"),
+                (Number) tokens.get("expires_in"),
+                (String) tokens.get("token_type")
+        );
     }
 
     private String getAdminToken(){
+        var tokens = loginGenerico(null);
+        return (String) tokens.get("access_token");
+    }
+
+    private Map loginGenerico(LoginRequestDTO request){
         String postUrl = String.format("%s/realms/%s/protocol/openid-connect/token", props.getBaseUrl(), props.getRealm());
+        MultiValueMap<String, String> formData = getStringStringMultiValueMap(request);
 
-        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
-        formData.add("grant_type", "password");
-        formData.add("client_id", props.getClientId());
-        formData.add("client_secret", props.getClientSecret());
-        formData.add("username", props.getAdminUsername());
-        formData.add("password", props.getAdminPassword());
-
-        try{
-            var response = restClient.post()
+        try {
+            var tokens = restClient.post()
                     .uri(postUrl)
                     .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                     .body(formData)
                     .retrieve()
                     .body(Map.class);
 
-           if(response == null){
-               throw new RuntimeException("Token ausente.");
-           }
+            if (tokens == null || tokens.get("access_token") == null) {
+                throw new KeycloakIntegrationException("Token ausente.");
+            }
 
-           return (String) response.get("access_token");
+            return tokens;
         }
-        catch (HttpClientErrorException exc){
-            throw new RuntimeException("Erro ao obter o token do admin do keycloak.");
+        catch (HttpClientErrorException e){
+            throw new KeycloakUnauthorizedException("E-mail ou senha incorretos: ");
         }
+    }
 
+    private @NonNull MultiValueMap<String, String> getStringStringMultiValueMap(LoginRequestDTO request) {
+        MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
+
+        if(request == null){
+            formData.add("grant_type", "password");
+            formData.add("client_id", props.getClientId());
+            formData.add("client_secret", props.getClientSecret());
+            formData.add("username", props.getAdminUsername());
+            formData.add("password", props.getAdminPassword());
+        }
+        else{
+            formData.add("grant_type", "password");
+            formData.add("client_id", props.getClientId());
+            formData.add("client_secret", props.getClientSecret());
+            formData.add("username", request.email());
+            formData.add("password", request.senha());
+        }
+        return formData;
     }
 
     private static String extractUserIdFromLocation(URI location) {
