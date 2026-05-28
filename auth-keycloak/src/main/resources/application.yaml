@@ -4,38 +4,31 @@ server:
 spring:
   application:
     name: auth-keycloak
-
   datasource:
     url: jdbc:postgresql://localhost:5432/db_auth_keycloak
     username: postgres
     password: postgres
     driver-class-name: org.postgresql.Driver
-
   jpa:
     hibernate:
       ddl-auto: none
-
+    defer-datasource-initialization: false
   flyway:
-    user: postgres
-    password: postgres
     enabled: true
-    url: jdbc:postgresql://localhost:5432/db_auth_keycloak
     baseline-on-migrate: true
     locations: classpath:db/migration
-
   security:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8080/realms/my-apps}
-
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8080/realms/master}
 cors:
   allowed-origins: ${ALLOWED_CORS_ORIGINS:*}
 
 keycloak:
   base-url: http://localhost:8080
-  realm: my-apps
+  realm: master
   client-id: auth-keycloak
-  client-secret: xHdzfQITWvG3eVy1dRA2jTT9bcWIjT9M
+  client-secret: wN2ExJiCT0hjV1l7UjorKCyzUO1D5PVH
   admin-username: admin
   admin-password: admin

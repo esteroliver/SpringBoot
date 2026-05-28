@@ -95,7 +95,7 @@ public class KeycloakAdminService {
         formData.add("password", props.getAdminPassword());
 
         var response = restClient.post()
-                .uri(props.getBaseUrl() + "/realms/my-apps/protocol/openid-connect/token")
+                .uri(props.getBaseUrl() + "/realms/" + props.getRealm() + "/protocol/openid-connect/token")
                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                 .body(formData)
                 .retrieve()

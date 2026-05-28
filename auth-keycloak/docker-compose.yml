@@ -9,26 +9,3 @@ services:
       KEYCLOAK_ADMIN_PASSWORD: admin
     ports:
       - "8080:8080"
-  api:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    container_name: auth-keycloak-spring
-    restart: unless-stopped
-    ports:
-      - "8081:8081"
-    depends_on:
-      - keycloak
-      - db
-    environment:
-      KEYCLOAK_ISSUER_URI: http://localhost:8080/realms/my-apps
-      ALLOWED_CORS_ORIGINS: http://localhost:4200
-  db:
-    image: postgres:16-alpine
-    container_name: db-auth-keycloak
-    restart: unless-stopped
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-    ports:
-      - "5433:5433"

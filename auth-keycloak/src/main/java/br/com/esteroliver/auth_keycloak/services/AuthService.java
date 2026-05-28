@@ -31,12 +31,12 @@ public class AuthService {
             throw new RuntimeException("Erro ao criar usuário no Keycloak: " + exc.getMessage());
         }
 
-        Usuario usuario = Usuario.builder()
-                .email(request.email())
-                .nome(request.nome())
-                .papel(Papel.CLIENTE)
-                .keycloakId(keycloakId)
-                .build();
+        Usuario usuario = new Usuario();
+
+        usuario.setEmail(request.email());
+        usuario.setNome(request.nome());
+        usuario.setPapel(Papel.CLIENTE);
+        usuario.setKeycloakId(keycloakId);
 
         return UsuarioResponseDTO.from(usuarioRepository.save(usuario));
     }
