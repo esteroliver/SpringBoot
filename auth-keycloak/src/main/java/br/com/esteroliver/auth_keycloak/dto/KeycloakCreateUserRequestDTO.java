@@ -8,6 +8,6 @@ public record KeycloakCreateUserRequestDTO(
         String firstName,
         String lastName,
         Boolean enabled,
-        List<KeycloakCredential> credentials
+        List<KeycloakCredentialDTO> credentials
 ) {
 }

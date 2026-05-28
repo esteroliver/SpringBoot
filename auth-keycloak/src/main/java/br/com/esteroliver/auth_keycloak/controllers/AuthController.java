@@ -21,13 +21,13 @@ public class AuthController {
     @Autowired
     AuthService authService;
 
-    @PostMapping("/cadastrar")
-    public ResponseEntity<UsuarioResponseDTO> cadastrarUsuarioCliente(@Valid @RequestBody UsuarioRequestDTO request){
-        return ResponseEntity.status(HttpStatus.CREATED).body(authService.cadastrarUsuarioCliente(request));
-    }
-
     @PostMapping("/login")
     public ResponseEntity<LoginResponseDTO> login(@Valid @RequestBody LoginRequestDTO request){
         return ResponseEntity.ok(authService.login(request));
+    }
+
+    @PostMapping("/cadastrar/cliente")
+    public ResponseEntity<UsuarioResponseDTO> cadastrarUsuarioCliente(@Valid @RequestBody UsuarioRequestDTO request){
+        return ResponseEntity.status(HttpStatus.CREATED).body(authService.cadastrarUsuarioCliente(request));
     }
 }

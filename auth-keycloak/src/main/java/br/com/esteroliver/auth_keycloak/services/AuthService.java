@@ -1,9 +1,6 @@
 package br.com.esteroliver.auth_keycloak.services;
 
-import br.com.esteroliver.auth_keycloak.dto.LoginRequestDTO;
-import br.com.esteroliver.auth_keycloak.dto.LoginResponseDTO;
-import br.com.esteroliver.auth_keycloak.dto.UsuarioRequestDTO;
-import br.com.esteroliver.auth_keycloak.dto.UsuarioResponseDTO;
+import br.com.esteroliver.auth_keycloak.dto.*;
 import br.com.esteroliver.auth_keycloak.entity.Usuario;
 import br.com.esteroliver.auth_keycloak.entity.enums.Papel;
 import br.com.esteroliver.auth_keycloak.repository.UsuarioRepository;
@@ -43,16 +40,13 @@ public class AuthService {
     }
 
     public LoginResponseDTO login(LoginRequestDTO request){
-        var tokens = keycloakAdminService.login(request);
+        KeycloakLoginResponseDTO tokensInfos = keycloakAdminService.login(request);
 
         Usuario usuario = usuarioRepository.findByEmail(request.email())
                 .orElseThrow(() -> new RuntimeException("Usuário não encontrado."));
 
         return new LoginResponseDTO(
-                (String) tokens.get("access_token"),
-                (String) tokens.get("refresh_token"),
-                (Number) tokens.get("expires_in"),
-                (String) tokens.get("token_type"),
+                tokensInfos,
                 UsuarioResponseDTO.from(usuario)
         );
     }

@@ -1,10 +1,7 @@
 package br.com.esteroliver.auth_keycloak.services;
 
 import br.com.esteroliver.auth_keycloak.config.KeycloakProperties;
-import br.com.esteroliver.auth_keycloak.dto.KeycloakCreateUserRequestDTO;
-import br.com.esteroliver.auth_keycloak.dto.KeycloakCredential;
-import br.com.esteroliver.auth_keycloak.dto.LoginRequestDTO;
-import br.com.esteroliver.auth_keycloak.dto.UsuarioRequestDTO;
+import br.com.esteroliver.auth_keycloak.dto.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -32,7 +29,7 @@ public class KeycloakAdminService {
         String postUrl = String.format("%s/admin/realms/%s/users", props.getBaseUrl(), props.getRealm());
         String adminToken = getAdminToken();
 
-        List<KeycloakCredential> credentials = List.of(new KeycloakCredential(
+        List<KeycloakCredentialDTO> credentials = List.of(new KeycloakCredentialDTO(
                 "password",
                  request.senha(),
                 false
@@ -69,7 +66,7 @@ public class KeycloakAdminService {
         }
     }
 
-    public Map login(LoginRequestDTO request){
+    public KeycloakLoginResponseDTO login(LoginRequestDTO request){
         LinkedMultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
 
         formData.add("grant_type", "password");
@@ -79,12 +76,23 @@ public class KeycloakAdminService {
         formData.add("password", request.senha());
 
         try{
-            return restClient.post()
+            Map tokens = restClient.post()
                     .uri(props.getBaseUrl() + "/realms/" + props.getRealm() + "/protocol/openid-connect/token")
                     .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                     .body(formData)
                     .retrieve()
                     .body(Map.class);
+
+            if(tokens == null){
+                //throw exception
+            }
+
+            return new KeycloakLoginResponseDTO(
+                    (String) tokens.get("access_token"),
+                    (String) tokens.get("refresh_token"),
+                    (Number) tokens.get("expires_in"),
+                    (String) tokens.get("token_type")
+            );
         }
         catch (HttpClientErrorException exc){
             throw new BadCredentialsException("Email ou senha inválidos");

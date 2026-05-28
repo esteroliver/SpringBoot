@@ -5,9 +5,9 @@ import jakarta.validation.constraints.NotBlank;
 
 public record LoginRequestDTO(
         @NotBlank
-        @Email
-        String email,
+        String senha,
         @NotBlank
-        String senha
+        @Email
+        String email
 ) {
 }
