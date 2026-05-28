@@ -11,7 +11,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.client.HttpClientErrorException;
@@ -31,7 +30,7 @@ public class KeycloakAdminService {
 
     public String criarUsuario(UsuarioRequestDTO request){
         String postUrl = String.format("%s/admin/realms/%s/users", props.getBaseUrl(), props.getRealm());
-        String adminToken = getAdminToken();
+        String adminToken = adminToken();
 
         List<KeycloakCredentialDTO> credentials = List.of(new KeycloakCredentialDTO(
                 "password",
@@ -57,7 +56,7 @@ public class KeycloakAdminService {
                     .toBodilessEntity();
 
             URI location = response.getHeaders().getLocation();
-            return extractUserIdFromLocation(location);
+            return extrairIdKeycloakDoUsuario(location);
         }
         catch (HttpClientErrorException e){
             if (e.getStatusCode() == HttpStatus.CONFLICT) {
@@ -82,14 +81,14 @@ public class KeycloakAdminService {
         );
     }
 
-    private String getAdminToken(){
+    private String adminToken(){
         var tokens = loginGenerico(null);
         return (String) tokens.get("access_token");
     }
 
     private Map loginGenerico(LoginRequestDTO request){
         String postUrl = String.format("%s/realms/%s/protocol/openid-connect/token", props.getBaseUrl(), props.getRealm());
-        MultiValueMap<String, String> formData = getStringStringMultiValueMap(request);
+        MultiValueMap<String, String> formData = criarFormDataParaLogin(request);
 
         try {
             var tokens = restClient.post()
@@ -110,7 +109,7 @@ public class KeycloakAdminService {
         }
     }
 
-    private @NonNull MultiValueMap<String, String> getStringStringMultiValueMap(LoginRequestDTO request) {
+    private @NonNull MultiValueMap<String, String> criarFormDataParaLogin(LoginRequestDTO request) {
         MultiValueMap<String, String> formData = new LinkedMultiValueMap<>();
 
         if(request == null){
@@ -130,7 +129,7 @@ public class KeycloakAdminService {
         return formData;
     }
 
-    private static String extractUserIdFromLocation(URI location) {
+    private static String extrairIdKeycloakDoUsuario(URI location) {
         if (location == null) return null;
         String path = location.getPath();
         if (path == null || path.isBlank()) return null;
