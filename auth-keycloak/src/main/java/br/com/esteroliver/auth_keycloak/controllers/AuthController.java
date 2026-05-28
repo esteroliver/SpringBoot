@@ -6,7 +6,7 @@ import br.com.esteroliver.auth_keycloak.dto.UsuarioRequestDTO;
 import br.com.esteroliver.auth_keycloak.dto.UsuarioResponseDTO;
 import br.com.esteroliver.auth_keycloak.services.AuthService;
 import jakarta.validation.Valid;
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,10 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/auth")
-@RequiredArgsConstructor
 public class AuthController {
 
-    private final AuthService authService;
+    @Autowired
+    AuthService authService;
 
     @PostMapping("/cadastrar")
     public ResponseEntity<UsuarioResponseDTO> cadastrarUsuarioCliente(@Valid @RequestBody UsuarioRequestDTO request){

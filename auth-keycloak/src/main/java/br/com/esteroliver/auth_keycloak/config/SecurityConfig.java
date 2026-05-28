@@ -1,6 +1,6 @@
 package br.com.esteroliver.auth_keycloak.config;
 
-import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -18,9 +18,9 @@ import java.util.Map;
 
 @Configuration
 @EnableWebSecurity
-@RequiredArgsConstructor
 public class SecurityConfig {
 
+    @Autowired
     KeycloakProperties keycloakProperties;
 
     private final String[] ENDPOINTS_PUBLICOS = {
@@ -58,7 +58,7 @@ public class SecurityConfig {
             if(resourceAccess == null)
                 return List.of();
 
-            var clientAccess = (Map<String, Object>) resourceAccess.get(keycloakProperties.getClientId());
+            var clientAccess = (Map<String, Object>) resourceAccess.get("");
             if (clientAccess == null) return List.of();
 
             var roles = (List<String>) clientAccess.get("roles");
