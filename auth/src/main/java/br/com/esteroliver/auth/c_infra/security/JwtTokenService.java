@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+import br.com.esteroliver.auth.a_domain.model.Usuario;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
@@ -18,14 +19,14 @@ public class JwtTokenService {
     private static final String ISSUER = "esteroliver";
     private final Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
 
-    public String gerarToken(UserDetailsImpl userDetails){
+    public String gerarToken(Usuario usuario){
         try{
             return JWT.create()
             .withIssuer(ISSUER)
-            .withSubject(userDetails.getUsername())
+            .withSubject(usuario.getEmail())
             .withClaim("type", "access")
             .withIssuedAt(dataCriacao())
-            .withExpiresAt(dataExpiracao())
+            .withExpiresAt(dataExpiracaoToken())
             .sign(algorithm);
         }
         catch(JWTCreationException exception){
@@ -47,11 +48,11 @@ public class JwtTokenService {
         }
     }
 
-    public String gerarRefreshToken(UserDetailsImpl userDetails){
+    public String gerarRefreshToken(Usuario usuario){
         try{
             return JWT.create()
                     .withIssuer(ISSUER)
-                    .withSubject(userDetails.getUsername())
+                    .withSubject(usuario.getEmail())
                     .withClaim("type", "refresh")
                     .withIssuedAt(dataCriacao())
                     .withExpiresAt(dataExpiracaoRefreshToken())
@@ -80,8 +81,8 @@ public class JwtTokenService {
         return ZonedDateTime.now(ZoneId.of("America/Recife")).toInstant();
     }
 
-    private Instant dataExpiracao(){
-        return ZonedDateTime.now(ZoneId.of("America/Recife")).plusHours(5).toInstant();
+    private Instant dataExpiracaoToken(){
+        return ZonedDateTime.now(ZoneId.of("America/Recife")).plusHours(3).toInstant();
     }
 
     private Instant dataExpiracaoRefreshToken(){

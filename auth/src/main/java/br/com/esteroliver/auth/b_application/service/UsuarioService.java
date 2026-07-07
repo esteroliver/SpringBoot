@@ -3,6 +3,7 @@ package br.com.esteroliver.auth.b_application.service;
 import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import br.com.esteroliver.auth.a_domain.model.Usuario;
@@ -17,7 +18,7 @@ public class UsuarioService {
     UsuarioRepository usuarioRepository;
 
     @Autowired
-    BCryptPasswordEncoder bCrypt;
+    PasswordEncoder passwordEncoder;
 
     @Transactional
     public void criar(UsuarioPostDTO dto) throws BadRequestException{
@@ -28,7 +29,7 @@ public class UsuarioService {
         Usuario usuario = new Usuario(dto);
 
         usuario.setSenha(
-            bCrypt.encode(dto.senha())
+            passwordEncoder.encode(dto.senha())
         );
 
         usuarioRepository.save(usuario);

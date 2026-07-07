@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.authentication.configurati
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -23,11 +23,14 @@ import java.util.List;
 public class SecurityConfiguration {
 
     @Autowired
-    JwtFilter jwtFilter;
+    JwtAuthFilter jwtAuthFilter;
     
     public static final String[] ENDPOINTS_PUBLICOS = {
         "/auth/login",
-        "/usuarios/criar"
+        "/usuarios/criar",
+        "/v3/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html"
     };
 
     public static final String[] ENDPOINTS_PARA_AUNTETICADOS = {
@@ -41,7 +44,7 @@ public class SecurityConfiguration {
     
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new Argon2PasswordEncoder(16, 32, 1, 1 << 14, 2);
     }
 
     @Bean
@@ -58,7 +61,7 @@ public class SecurityConfiguration {
                         .requestMatchers(ENDPOINTS_PARA_AUNTETICADOS).authenticated()
                         .anyRequest().permitAll()
                 )
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
                 .build();
     }
