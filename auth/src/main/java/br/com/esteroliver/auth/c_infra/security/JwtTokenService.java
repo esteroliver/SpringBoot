@@ -4,6 +4,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
+import br.com.esteroliver.auth.a_domain.model.Usuario;
 import org.springframework.stereotype.Service;
 
 import com.auth0.jwt.JWT;
@@ -16,15 +17,16 @@ import com.auth0.jwt.exceptions.JWTVerificationException;
 public class JwtTokenService {
     private static final String SECRET_KEY = "3c86d3471ee61f25fa3e20ca1acadeff";
     private static final String ISSUER = "esteroliver";
+    private final Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
 
-    public String gerarToken(UserDetailsImpl userDetails){
+    public String gerarToken(Usuario usuario){
         try{
-            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
             return JWT.create()
             .withIssuer(ISSUER)
-            .withSubject(userDetails.getUsername())
+            .withSubject(usuario.getEmail())
+            .withClaim("type", "access")
             .withIssuedAt(dataCriacao())
-            .withExpiresAt(dataExpiracao())
+            .withExpiresAt(dataExpiracaoToken())
             .sign(algorithm);
         }
         catch(JWTCreationException exception){
@@ -34,9 +36,9 @@ public class JwtTokenService {
 
     public String verificarToken(String token){
         try{
-            Algorithm algorithm = Algorithm.HMAC256(SECRET_KEY);
             return JWT.require(algorithm)
             .withIssuer(ISSUER)
+            .withClaim("type", "access")
             .build()
             .verify(token)
             .getSubject();
@@ -46,11 +48,44 @@ public class JwtTokenService {
         }
     }
 
+    public String gerarRefreshToken(Usuario usuario){
+        try{
+            return JWT.create()
+                    .withIssuer(ISSUER)
+                    .withSubject(usuario.getEmail())
+                    .withClaim("type", "refresh")
+                    .withIssuedAt(dataCriacao())
+                    .withExpiresAt(dataExpiracaoRefreshToken())
+                    .sign(algorithm);
+        }
+        catch(JWTCreationException exception){
+            throw new JWTCreationException("Erro ao gerar refresh token.", exception);
+        }
+    }
+
+    public String validarRefreshToken(String token){
+        try{
+            return JWT.require(algorithm)
+                    .withIssuer(ISSUER)
+                    .withClaim("type", "refresh")
+                    .build()
+                    .verify(token)
+                    .getSubject();
+        }
+        catch (JWTVerificationException exception){
+            throw new JWTVerificationException("Refresh token inválido ou expirado.");
+        }
+    }
+
     private Instant dataCriacao(){
         return ZonedDateTime.now(ZoneId.of("America/Recife")).toInstant();
     }
 
-    private Instant dataExpiracao(){
-        return ZonedDateTime.now(ZoneId.of("America/Recife")).plusHours(5).toInstant();
+    private Instant dataExpiracaoToken(){
+        return ZonedDateTime.now(ZoneId.of("America/Recife")).plusHours(3).toInstant();
+    }
+
+    private Instant dataExpiracaoRefreshToken(){
+        return ZonedDateTime.now(ZoneId.of("America/Recife")).plusDays(7).toInstant();
     }
 }
