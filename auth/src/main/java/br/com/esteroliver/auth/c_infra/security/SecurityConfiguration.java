@@ -5,10 +5,11 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.argon2.Argon2PasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
@@ -20,18 +21,19 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfiguration {
 
     @Autowired
-    JwtFilter jwtFilter;
+    JwtAuthFilter jwtAuthFilter;
     
     public static final String[] ENDPOINTS_PUBLICOS = {
         "/auth/login",
-        "/usuarios/criar"
-    };
-
-    public static final String[] ENDPOINTS_PARA_AUNTETICADOS = {
-            "/usuarios/teste"
+        "/auth/refresh",
+        "/usuario/criar",
+        "/v3/api-docs/**",
+        "/swagger-ui/**",
+        "/swagger-ui.html"
     };
 
     @Bean
@@ -41,12 +43,13 @@ public class SecurityConfiguration {
     
     @Bean
     public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
+        return new Argon2PasswordEncoder(16, 32, 1, 1 << 14, 2);
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
+                .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
                 .csrf((csrf) -> csrf.disable())
                 .sessionManagement(
                     (session) -> session
@@ -55,11 +58,9 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(
                     (auth) -> auth
                         .requestMatchers(ENDPOINTS_PUBLICOS).permitAll()
-                        .requestMatchers(ENDPOINTS_PARA_AUNTETICADOS).authenticated()
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
-                .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
-                .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
+                .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
