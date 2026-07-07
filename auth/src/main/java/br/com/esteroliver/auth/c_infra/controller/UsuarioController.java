@@ -4,6 +4,7 @@ import org.apache.coyote.BadRequestException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -35,5 +36,22 @@ public class UsuarioController {
     public ResponseEntity<String> testeAutenticacao() {
         return new ResponseEntity<>("Usuário autenticado", HttpStatus.OK);
     }
-    
+
+    @GetMapping("/teste-gestor")
+    @PreAuthorize("@auth.usuarioGestor(authentication)")
+    public ResponseEntity<String> gestorAutenticado() {
+        return new ResponseEntity<>("Gestor autenticado", HttpStatus.OK);
+    }
+
+    @GetMapping("/teste-administrador")
+    @PreAuthorize("@auth.usuarioAdministrador(authentication)")
+    public ResponseEntity<String> administradorAutenticado() {
+        return new ResponseEntity<>("Administrador autenticado", HttpStatus.OK);
+    }
+
+    @GetMapping("/teste-cliente")
+    @PreAuthorize("@auth.usuarioCliente(authentication)")
+    public ResponseEntity<String> clienteAutenticado() {
+        return new ResponseEntity<>("Cliente autenticado", HttpStatus.OK);
+    }
 }

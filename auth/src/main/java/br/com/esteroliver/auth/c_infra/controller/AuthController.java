@@ -16,7 +16,6 @@ import br.com.esteroliver.auth.b_application.service.AuthService;
 
 import java.time.Duration;
 
-
 @RestController
 @RequestMapping("/auth")
 public class AuthController {

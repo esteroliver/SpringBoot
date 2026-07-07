@@ -6,6 +6,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ProblemDetail;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
@@ -73,6 +74,21 @@ public class GlobalExceptionHandler {
         );
 
         problemDetail.setTitle("JWT verification exception");
+        problemDetail.setInstance(URI.create(request.getRequestURI()));
+
+        return problemDetail;
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ProblemDetail handleAuthorizationDeniedException(AuthorizationDeniedException exception, HttpServletRequest request){
+        LOGGER.error("Authorization denied exception on {} ({}): {}", request.getMethod(), request.getRequestURI(), exception.getMessage());
+
+        ProblemDetail problemDetail = ProblemDetail.forStatusAndDetail(
+                HttpStatus.UNAUTHORIZED,
+                "Autorização negada"
+        );
+
+        problemDetail.setTitle("Authorization denied exception");
         problemDetail.setInstance(URI.create(request.getRequestURI()));
 
         return problemDetail;

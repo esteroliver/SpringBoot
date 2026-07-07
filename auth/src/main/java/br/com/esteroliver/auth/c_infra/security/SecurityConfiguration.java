@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -20,6 +21,7 @@ import java.util.List;
 
 @Configuration
 @EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfiguration {
 
     @Autowired
@@ -31,10 +33,6 @@ public class SecurityConfiguration {
         "/v3/api-docs/**",
         "/swagger-ui/**",
         "/swagger-ui.html"
-    };
-
-    public static final String[] ENDPOINTS_PARA_AUNTETICADOS = {
-            "/usuarios/teste"
     };
 
     @Bean
@@ -50,6 +48,7 @@ public class SecurityConfiguration {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return httpSecurity
+                .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
                 .csrf((csrf) -> csrf.disable())
                 .sessionManagement(
                     (session) -> session
@@ -58,11 +57,9 @@ public class SecurityConfiguration {
                 .authorizeHttpRequests(
                     (auth) -> auth
                         .requestMatchers(ENDPOINTS_PUBLICOS).permitAll()
-                        .requestMatchers(ENDPOINTS_PARA_AUNTETICADOS).authenticated()
-                        .anyRequest().permitAll()
+                        .anyRequest().authenticated()
                 )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .cors((cors) -> cors.configurationSource(corsConfigurationSource()))
                 .build();
     }
 
